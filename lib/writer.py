@@ -71,3 +71,10 @@ def write_csv_schedule(schedule: List, file: str):
                        quoting=csv.QUOTE_MINIMAL)
         w.writerows(schedule or [])
 
+def write_local_and_gps(proj):
+    main_local_to_gps = proj.local_to_gps
+
+    with open('gps_coordinates_brazil.csv', 'w') as f:
+        writer = csv.writer(f)
+        for key, value in sorted(main_local_to_gps.items()):
+            writer.writerow([key, value])
