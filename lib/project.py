@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from geopy import distance
-from typing import List, Tuple, Set 
+from typing import List, Tuple, Set
+
 class Projector:
 
     lat_min = 90

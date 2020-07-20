@@ -72,46 +72,17 @@ def write_csv_schedule(schedule: List, file: str):
         w.writerows(schedule or [])
 
 def write_local_and_gps(proj, routes):
-    main_local_to_gps = []
+    main_local_to_gps = set()
 
     for route_name in routes.keys():
         nodes = routes[route_name]['nodes']
         stops = routes[route_name]['stops']
 
-        if route_name == 'JaguaraoArroioGrandePedroOsorioBage':
-            new_route_name = 'J.AG.PO.B'
-        elif route_name == 'JaguaraoArroioGrandePelotas':
-            new_route_name = 'J.AG.Pel'
-        elif route_name == 'HervalArroioGrande':
-            new_route_name = 'H.AG'
-        elif route_name == 'HervalPedroOsorioPelotas':
-            new_route_name = 'H.PO.Pel'
-        elif route_name == 'HervalArroioGrandePelotas':
-            new_route_name = 'H.AG.Pel'
-        elif route_name == 'BagePinheiroMachadoPelotas':
-            new_route_name = 'B.PM.Pel'
-        elif route_name == 'PinheiroMachadoPedrasAltasHervalJaguarao':
-            new_route_name = 'PM.PA.H.J'
-        elif route_name == 'PelotasPedroOsorioPiratini':
-            new_route_name = 'Pel.PO.Pi'
-        elif route_name == 'PiratiniPinheiroMachadoviaJoaoSaraiva':
-            new_route_name = 'Pi.PM'
-        elif route_name == 'CangucuPiratini':
-            new_route_name = 'Ca.Pi'
-        elif route_name == 'PiratiniPelotas':
-            new_route_name = 'Pi.Pel'
-        elif route_name == 'CerritoPassoDasPedrasFaixaPelotas':
-            new_route_name = 'Ce.Pp.Fa.Pel'
-        elif route_name == 'PelotasCangucu':
-            new_route_name = 'Pel.Ca'
-        else:
-            new_route_name = route_name
-
         for key, value in sorted(proj.local_to_gps.items()):
             if value in nodes or value in stops:
-                main_local_to_gps.append((new_route_name, key, value))
+                main_local_to_gps.add((key, value))
 
-    with open('gps_coordinates_brazil3.csv', 'w') as f:
+    with open('gps_coordinates_brazil.csv', 'w') as f:
         writer = csv.writer(f)
-        for route_name, local, gps in sorted(main_local_to_gps):
-            writer.writerow([route_name, local, gps])
+        for local, gps in sorted(main_local_to_gps):
+            writer.writerow([local, gps])

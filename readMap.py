@@ -118,8 +118,8 @@ for route_name in routes_latlon.keys():
     #stops_xy[route_name] = [routes_xy[route_name][0],routes_xy[route_name][-1]]
     stops_xy[route_name]['stops'] = [x for x in routes_xy[route_name]['stops']]
 
-    writer.write_local_and_gps(proj, routes_latlon)
     writer.write_wkt_linestring(coords=routes_xy[route_name]['nodes'], file=nodes_file)
     writer.write_csv_stops(coords=stops_xy[route_name]['stops'], durations=[30 for _ in range(len(stops_xy[route_name]['stops']))], file=stops_file)
 #print(routes_xy)
+writer.write_local_and_gps(proj, routes_latlon)
 
