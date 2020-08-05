@@ -12,6 +12,7 @@ CSV_QUOTECHAR = '"'
 # what the hack is a fallback duration?
 FALLBACK_DURATION = 3
 
+
 def write_wkt_linestring(coords: List[Tuple[float, float]], file: str, append=False) -> None:
     content = ''
     if append:
@@ -27,6 +28,7 @@ def write_wkt_linestring(coords: List[Tuple[float, float]], file: str, append=Fa
 
     with open(file, 'a+' if append else 'w+') as fp:
         fp.write(content)
+
 
 def write_wkt_points(coords: Set[Tuple[float, float]], file: str, append=False):
     content = ''
@@ -63,6 +65,7 @@ def write_csv_stops(coords: List[Tuple[float, float]], durations: List[int], fil
                 duration_s
             ])
 
+
 def write_csv_schedule(schedule: List, file: str):
     with open(file, 'w+') as fp:
         w = csv.writer(fp,
@@ -70,6 +73,7 @@ def write_csv_schedule(schedule: List, file: str):
                        quotechar=CSV_QUOTECHAR,
                        quoting=csv.QUOTE_MINIMAL)
         w.writerows(schedule or [])
+
 
 def write_local_and_gps(proj, routes):
     main_local_to_gps = set()
@@ -86,3 +90,11 @@ def write_local_and_gps(proj, routes):
         writer = csv.writer(f)
         for local, gps in sorted(main_local_to_gps):
             writer.writerow([local, gps])
+
+
+def write_gps_stops(stops):
+
+    with open("gps_stops_brazil.csv", 'w') as f:
+        writer = csv.writer(f)
+        for route, stop in stops.items():
+            writer.writerow([route, stop])

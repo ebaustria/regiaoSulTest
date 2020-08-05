@@ -5,17 +5,23 @@ import os
 import datetime
 from datetime import timedelta
 from datetime import datetime
+import pprint
 
 
 def get_name_from_file(fname):
     return fname.split('.')[0]
 
+
+pp = pprint.PrettyPrinter(indent=4)
+nodes = {}
+vis_stops = {}
 routes_latlon = {}
 routes_xy = {}
 stops_xy = {}
 
 points = set()
 #os.chdir("/home/jose/Documents/TU-Dresden/Documents/Papers/AdaptiveRouting/lines/")
+
 
 def calculate_time_in_seconds(day, timestr):
     hora = datetime.strptime(timestr, "%H:%M")
@@ -118,8 +124,15 @@ for route_name in routes_latlon.keys():
     #stops_xy[route_name] = [routes_xy[route_name][0],routes_xy[route_name][-1]]
     stops_xy[route_name]['stops'] = [x for x in routes_xy[route_name]['stops']]
 
+    nodes[route_name] = routes_latlon[route_name]['nodes']
+    vis_stops[route_name] = routes_latlon[route_name]['stops']
+    gps_nodes = route_name + "_gps_nodes.wkt"
+
     writer.write_wkt_linestring(coords=routes_xy[route_name]['nodes'], file=nodes_file)
+    writer.write_wkt_linestring(coords=nodes[route_name], file=gps_nodes)
     writer.write_csv_stops(coords=stops_xy[route_name]['stops'], durations=[30 for _ in range(len(stops_xy[route_name]['stops']))], file=stops_file)
 #print(routes_xy)
+
 writer.write_local_and_gps(proj, routes_latlon)
+writer.write_gps_stops(vis_stops)
 
