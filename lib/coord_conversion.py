@@ -1,10 +1,11 @@
+from typing import List, Tuple
 import json
 import pprint
 
 pp = pprint.PrettyPrinter(indent=4)
 
 
-def make_trips():
+def make_trips() -> None:
     final_coords = []
     time_coords_1 = []
 
@@ -32,37 +33,7 @@ def make_trips():
         new_tuple = (name, float_coords, time)
         time_coords_2.append(new_tuple)
 
-    # Reads file with GPS coordinates into program and stores it as a list of tuples.
-    coords_list_1 = []
-    with open("gps_coordinates_brazil.csv", 'r') as coordinates:
-        print("    Reading local coordinates and GPS coordinates...")
-        splt_char = ','
-        n = 2
-        c = coordinates.readlines()
-        for row in c:
-            row = row.replace(" ", "")
-            row = row.replace('"', "")
-            row = row.replace('\n', "")
-            l = row.split(',')
-            t = splt_char.join(l[:n]), splt_char.join(l[n:])
-            tup = (t[1], t[0])
-            coords_list_1.append(tup)
-
-    # Reformat the data and convert it back to numeric values.
-    coords_list_2 = []
-    for gps, coords in coords_list_1:
-        gps = gps[1:-1]
-        coords = coords[1:-1]
-        gps = gps.split(',')
-        coords = coords.split(',')
-        gps[0] = float(gps[0])
-        gps[1] = float(gps[1])
-        coords[0] = float(coords[0])
-        coords[1] = float(coords[1])
-        new_local_coords = (coords[0], coords[1])
-        new_gps_coords = [gps[1], gps[0]]
-        new_tuple = (new_local_coords, new_gps_coords)
-        coords_list_2.append(new_tuple)
+    coords_list = coordinate_list()
 
     # Makes a list of tuples containing the GPS coordinates and timestamps from the previous two lists. Each tuple contains
     # a name, a set of coordinates and a timestamp.
@@ -71,7 +42,7 @@ def make_trips():
         timestamp = float(timestamp)
         x = coords[0]
         y = coords[1]
-        for x_y, gps in coords_list_2:
+        for x_y, gps in coords_list:
             x1 = x_y[0]
             y1 = x_y[1]
             if x == x1 and y == y1:
@@ -106,3 +77,39 @@ def make_trips():
 
     with open("one_trace_brazil.json", "w") as file:
         file.write(json_file)
+
+
+def coordinate_list() -> List[Tuple]:
+    # Reads file with GPS coordinates into program and stores it as a list of tuples.
+    coords_list_1 = []
+    with open("gps_coordinates_brazil.csv", 'r') as coordinates:
+        print("    Making list of local-GPS tuples...")
+        splt_char = ','
+        n = 2
+        c = coordinates.readlines()
+        for row in c:
+            row = row.replace(" ", "")
+            row = row.replace('"', "")
+            row = row.replace('\n', "")
+            l = row.split(',')
+            t = splt_char.join(l[:n]), splt_char.join(l[n:])
+            tup = (t[1], t[0])
+            coords_list_1.append(tup)
+
+    # Reformat the data and convert it back to numeric values.
+    coords_list_2 = []
+    for gps, coords in coords_list_1:
+        gps = gps[1:-1]
+        coords = coords[1:-1]
+        gps = gps.split(',')
+        coords = coords.split(',')
+        gps[0] = float(gps[0])
+        gps[1] = float(gps[1])
+        coords[0] = float(coords[0])
+        coords[1] = float(coords[1])
+        new_local_coords = (coords[0], coords[1])
+        new_gps_coords = [gps[1], gps[0]]
+        new_tuple = (new_local_coords, new_gps_coords)
+        coords_list_2.append(new_tuple)
+
+    return coords_list_2

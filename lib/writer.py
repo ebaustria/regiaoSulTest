@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from typing import List, Tuple, Set
+from typing import List, Tuple, Set, Dict
+from project import Projector
 import csv
 
 WKT_BEGIN_LNSTR = 'LINESTRING ('
@@ -75,7 +76,7 @@ def write_csv_schedule(schedule: List, file: str):
         w.writerows(schedule or [])
 
 
-def write_local_and_gps(proj, routes):
+def write_local_and_gps(proj: Projector, routes: Dict) -> None:
     main_local_to_gps = set()
 
     for route_name in routes.keys():
@@ -90,11 +91,3 @@ def write_local_and_gps(proj, routes):
         writer = csv.writer(f)
         for local, gps in sorted(main_local_to_gps):
             writer.writerow([local, gps])
-
-
-def write_gps_stops(stops):
-
-    with open("gps_stops_brazil.csv", 'w') as f:
-        writer = csv.writer(f)
-        for route, stop in stops.items():
-            writer.writerow([route, stop])

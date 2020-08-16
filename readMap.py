@@ -134,5 +134,3 @@ for route_name in routes_latlon.keys():
 #print(routes_xy)
 
 writer.write_local_and_gps(proj, routes_latlon)
-writer.write_gps_stops(vis_stops)
-

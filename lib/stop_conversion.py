@@ -1,9 +1,12 @@
+from typing import List, Dict
 import json
+import wkt_parser
+import coord_conversion
 
 
-def build_list(stations):
+def build_list(stations: List[List[float]]) -> List[Dict]:
     json_list = []
-    for line, coord in stations:
+    for coord in stations:
         new_station = {
             "name": "stop name",
             "address": "nowhere",
@@ -11,37 +14,33 @@ def build_list(stations):
             "coordinates": coord
         }
         json_list.append(new_station)
+
     return json_list
 
 
-def make_stops():
-    line_stops_1 = []
-    with open("gps_stops_brazil.csv", 'r') as stops:
-        reader = stops.readlines()
-        for row in reader:
-            route_stops = row.split('[')
-            route_stops[0] = route_stops[0].strip(',"')
-            route_stops[1] = route_stops[1].strip(']"\n')
-            route_stops[1] = route_stops[1].split('), (')
+def make_stops() -> None:
+    coords_list = coord_conversion.coordinate_list()
+    stops = []
 
-            new_entry = (route_stops[0], route_stops[1])
-            line_stops_1.append(new_entry)
+    with open("stations.wkt", 'r') as stations:
+        stations = stations.readlines()
+        stations = wkt_parser.parse_wkt_stops(stations)
 
-    line_stops_2 = []
-    for route, stops in line_stops_1:
-        for stop in stops:
-            stop = stop.strip('()')
-            stop = stop.split(', ')
-            stop[0] = float(stop[0])
-            stop[1] = float(stop[1])
-            new_stop = [stop[1], stop[0]]
-            new_entry = (route, new_stop)
-            line_stops_2.append(new_entry)
+    with open("cities.wkt", 'r') as cities:
+        cities = cities.readlines()
+        cities = wkt_parser.parse_wkt_stops(cities)
 
-    result = build_list(line_stops_2)
+    for local, gps in coords_list:
+        for station in stations:
+            if local[0] == station[0] and local[1] == station[1]:
+                stops.append(gps)
+        for city in cities:
+            if local[0] == city[0] and local[1] == city[1]:
+                stops.append(gps)
+
+    result = build_list(stops)
 
     stops_json = json.dumps(result, indent=2)
 
     with open("stops_brazil.json", "w") as file:
         file.write(stops_json)
-

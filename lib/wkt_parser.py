@@ -1,5 +1,7 @@
+from typing import List
 
-def parse_wkt(nodes):
+
+def parse_wkt_route(nodes) -> List[List[float]]:
     list_to_build = []
     nodes = nodes.strip("LINESTRING ()")
     nodes = nodes.split(',')
@@ -14,13 +16,15 @@ def parse_wkt(nodes):
     return list_to_build
 
 
-def build_list(name, color, nodes, route_list):
+def parse_wkt_stops(stops: List[str]) -> List[List[float]]:
+    result = []
 
-    new_route = {
-        "name": name,
-        "color": [0, 204, 102],
-        "path": nodes
-    }
+    for row in stops:
+        row = row.strip("POINT (")
+        row = row.split()
+        row[1] = row[1].strip(')')
+        row[0] = float(row[0])
+        row[1] = float(row[1])
+        result.append(row)
 
-    route_list.append(new_route)
-    return route_list
+    return result
