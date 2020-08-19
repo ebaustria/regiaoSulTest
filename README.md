@@ -7,7 +7,7 @@ Steps for creating a deck.gl visualization:
 
 2. Run the ONE. When the simulation is finished, it will write a report. Each line of the report has the following form: vehicle name, local coordinates, timestamp. The vehicle name is the name of the vehicle in question, the local coordinates are a pair of coordinates used in the ONE, and the timestamp is the simulation time at which the vehicle is located at the local coordinates in question.
 
-3. Find the report and rename it as "local_coordinates_brazil.txt". Move this file to the "regiaoSul" repository and navigate to that repository.
+3. Find the report and rename it as "local_coordinates_brazil.txt". Move this file to the "regiaoSul" repository. Also find "stations.wkt" and "cities.wkt" for regiaoSul and copy them to the "regiaoSul" repository. Navigate to that repository.
 
 4. Run readMap.py. On line 136 of readMap.py, this will write a file called "gps_coordinates_brazil.csv". "gps_coordinates_brazil.csv" is a mapping of the local coordinates of each node (used in the ONE) to that node's corresponding GPS coordinates. Running readMap.py also writes a WKT linestring file for each route that consists of GPS coordinates. These files are written on line 132. The WKT linestring file names have the format route_name + "_gps_nodes.wkt".
 
