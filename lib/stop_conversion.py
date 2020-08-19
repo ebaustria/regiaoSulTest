@@ -22,18 +22,18 @@ def make_stops() -> None:
     coords_list = coord_conversion.coordinate_list()
     stops = []
 
-    with open("stations.wkt", 'r') as stations:
-        stations = stations.readlines()
-        stations = wkt_parser.parse_wkt_stops(stations)
+    #with open("stations.wkt", 'r') as stations:
+    #    stations = stations.readlines()
+    #    stations = wkt_parser.parse_wkt_stops(stations)
 
     with open("cities.wkt", 'r') as cities:
         cities = cities.readlines()
         cities = wkt_parser.parse_wkt_stops(cities)
 
     for local, gps in coords_list:
-        for station in stations:
-            if local[0] == station[0] and local[1] == station[1]:
-                stops.append(gps)
+        #for station in stations:
+        #    if local[0] == station[0] and local[1] == station[1]:
+        #        stops.append(gps)
         for city in cities:
             if local[0] == city[0] and local[1] == city[1]:
                 stops.append(gps)
