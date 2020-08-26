@@ -22,39 +22,30 @@ def make_trips() -> None:
             time_coords_1.append(tup)
 
     # Reformats the coordinates in time_coords_1 and converts them from strings to numeric values.
-    time_coords_2 =[]
-    for name, entry, time in time_coords_1:
+    time_coords_2 = []
+    for name, coords, time in time_coords_1:
         time = time.strip(',')
-        entry = entry[1:-1]
-        entry = entry.split(',')
-        entry[0] = float(entry[0])
-        entry[1] = float(entry[1])
-        float_coords = (entry[0], entry[1])
-        new_tuple = (name, float_coords, time)
+        coords = cast_to_float(coords)
+        new_tuple = (name, coords, time)
         time_coords_2.append(new_tuple)
 
     coords_list = coordinate_list()
 
-    # Makes a list of tuples containing the GPS coordinates and timestamps from the previous two lists. Each tuple contains
-    # a name, a set of coordinates and a timestamp.
+    # Makes a list of tuples containing the GPS coordinates and timestamps from the previous two lists. Each tuple
+    # contains a name, a set of coordinates and a timestamp.
     print("    Making list of GPS coordinates with timestamps...")
     for name, coords, timestamp in time_coords_2:
         timestamp = float(timestamp)
-        x = coords[0]
-        y = coords[1]
-        for x_y, gps in coords_list:
-            x1 = x_y[0]
-            y1 = x_y[1]
-            if x == x1 and y == y1:
+        for local, gps in coords_list:
+            if coords == local:
                 new = (name, gps, timestamp)
                 final_coords.append(new)
 
     # Makes dictionary out of data from final_coords. Coordinates and timestamps are mapped to vehicle names.
     new_dict = {}
     for name, coords, timestamp in final_coords:
-        new_dict[name] = []
-
-    for name, coords, timestamp in final_coords:
+        if name not in new_dict.keys():
+            new_dict[name] = []
         new_entry = (coords, timestamp)
         new_dict[name].append(new_entry)
 
@@ -79,37 +70,39 @@ def make_trips() -> None:
         file.write(json_file)
 
 
-def coordinate_list() -> List[Tuple]:
+def coordinate_list() -> List[Tuple[Tuple[float, float], List[float]]]:
     # Reads file with GPS coordinates into program and stores it as a list of tuples.
     coords_list_1 = []
     with open("gps_coordinates_brazil.csv", 'r') as coordinates:
         print("    Making list of local-GPS tuples...")
         splt_char = ','
         n = 2
-        c = coordinates.readlines()
-        for row in c:
+        reader = coordinates.readlines()
+        for row in reader:
             row = row.replace(" ", "")
             row = row.replace('"', "")
             row = row.replace('\n', "")
-            l = row.split(',')
-            t = splt_char.join(l[:n]), splt_char.join(l[n:])
-            tup = (t[1], t[0])
-            coords_list_1.append(tup)
+            l = row.split(splt_char)
+            new_coords = splt_char.join(l[:n]), splt_char.join(l[n:])
+            entry = (new_coords[0], new_coords[1])
+            coords_list_1.append(entry)
 
     # Reformat the data and convert it back to numeric values.
     coords_list_2 = []
-    for gps, coords in coords_list_1:
-        gps = gps[1:-1]
-        coords = coords[1:-1]
-        gps = gps.split(',')
-        coords = coords.split(',')
-        gps[0] = float(gps[0])
-        gps[1] = float(gps[1])
-        coords[0] = float(coords[0])
-        coords[1] = float(coords[1])
-        new_local_coords = (coords[0], coords[1])
-        new_gps_coords = [gps[1], gps[0]]
-        new_tuple = (new_local_coords, new_gps_coords)
+    for coords, gps in coords_list_1:
+        coords = cast_to_float(coords)
+        gps = cast_to_float(gps)
+        gps = [gps[1], gps[0]]
+        new_tuple = (coords, gps)
         coords_list_2.append(new_tuple)
 
     return coords_list_2
+
+
+def cast_to_float(coords: str) -> Tuple[float, float]:
+    coords = coords[1:-1]
+    coords = coords.split(',')
+    x = float(coords[0])
+    y = float(coords[1])
+    new_coords = (x, y)
+    return new_coords

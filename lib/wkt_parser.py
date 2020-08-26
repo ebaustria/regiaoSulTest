@@ -23,8 +23,9 @@ def parse_wkt_stops(stops: List[str]) -> List[List[float]]:
         row = row.strip("POINT (")
         row = row.split()
         row[1] = row[1].strip(')')
-        row[0] = float(row[0])
-        row[1] = float(row[1])
-        result.append(row)
+        lat = float(row[0])
+        lon = float(row[1])
+        new_entry = [lat, lon]
+        result.append(new_entry)
 
     return result
