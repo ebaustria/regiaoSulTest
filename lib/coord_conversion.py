@@ -1,41 +1,20 @@
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 import json
 import pprint
 
 pp = pprint.PrettyPrinter(indent=4)
 
 
-def make_trips() -> None:
+def make_trips(local_coordinates, gps_coordinates) -> None:
+
     final_coords = []
-    time_coords_1 = []
+    timestamps = timestamps_list(local_coordinates)
+    coords_list = gps_list(gps_coordinates)
 
-    # Reads file with timestamps into program and stores it as a list of tuples.
-    with open("local_coordinates_brazil.txt", 'r') as time:
-        print("    Reading local coordinates and timestamps...")
-        reader = time.readlines()
-        for row in reader:
-            coords_time = row.split()
-            name = coords_time[0]
-            x_y_vals = coords_time[1]
-            time = coords_time[2]
-            tup = (name, x_y_vals, time)
-            time_coords_1.append(tup)
-
-    # Reformats the coordinates in time_coords_1 and converts them from strings to numeric values.
-    time_coords_2 = []
-    for name, coords, time in time_coords_1:
-        time = time.strip(',')
-        coords = cast_to_float(coords)
-        new_tuple = (name, coords, time)
-        time_coords_2.append(new_tuple)
-
-    coords_list = coordinate_list()
-
-    # Makes a list of tuples containing the GPS coordinates and timestamps from the previous two lists. Each tuple
+    # Makes a list of tuples containing the GPS coordinates and timestamps from the two lists defined above. Each tuple
     # contains a name, a set of coordinates and a timestamp.
     print("    Making list of GPS coordinates with timestamps...")
-    for name, coords, timestamp in time_coords_2:
-        timestamp = float(timestamp)
+    for name, coords, timestamp in timestamps:
         for local, gps in coords_list:
             if coords == local:
                 new = (name, gps, timestamp)
@@ -52,28 +31,26 @@ def make_trips() -> None:
     # Converts each key-value pair from new_dict into a dictionary and adds each dictionary to a list.
     print("    Making final list of dictionaries...")
     json_list = []
-    for key in new_dict.keys():
+    for name in new_dict.keys():
         new_json = {
-            "vendor": 0,
+            "vendor": name,
             "path": [],
             "timestamps": []
         }
-        for coords, timestamp in new_dict[key]:
+        for coords, timestamp in new_dict[name]:
             new_json["path"].append(coords)
             new_json["timestamps"].append(timestamp)
         json_list.append(new_json)
 
-    # Writes the list of dictionaries to a JSON file.
-    json_file = json.dumps(json_list, indent=2)
-
-    with open("one_trace_brazil.json", "w") as file:
-        file.write(json_file)
+    write_json(json_list)
 
 
-def coordinate_list() -> List[Tuple[Tuple[float, float], List[float]]]:
+def gps_list(gps_coordinates: str) -> List[Tuple[Tuple[float, float], List[float]]]:
+
     # Reads file with GPS coordinates into program and stores it as a list of tuples.
     coords_list_1 = []
-    with open("gps_coordinates_brazil.csv", 'r') as coordinates:
+
+    with open(gps_coordinates, 'r') as coordinates:
         print("    Making list of local-GPS tuples...")
         splt_char = ','
         n = 2
@@ -89,6 +66,7 @@ def coordinate_list() -> List[Tuple[Tuple[float, float], List[float]]]:
 
     # Reformat the data and convert it back to numeric values.
     coords_list_2 = []
+
     for coords, gps in coords_list_1:
         coords = cast_to_float(coords)
         gps = cast_to_float(gps)
@@ -99,10 +77,50 @@ def coordinate_list() -> List[Tuple[Tuple[float, float], List[float]]]:
     return coords_list_2
 
 
+def timestamps_list(local_coordinates: str) -> List[Tuple[str, Tuple[float, float], float]]:
+
+    # Reads file with timestamps into program and stores it as a list of tuples.
+    time_coords_1 = []
+
+    with open(local_coordinates, 'r') as time:
+        print("    Reading local coordinates and timestamps...")
+        reader = time.readlines()
+        for row in reader:
+            coords_time = row.split()
+            name = coords_time[0]
+            x_y_vals = coords_time[1]
+            time = coords_time[2]
+            tup = (name, x_y_vals, time)
+            time_coords_1.append(tup)
+
+    # Reformats the coordinates in time_coords_1 and converts them from strings to numeric values.
+    time_coords_2 = []
+
+    for name, coords, time in time_coords_1:
+        time = time.strip(',')
+        time = float(time)
+        coords = cast_to_float(coords)
+        new_tuple = (name, coords, time)
+        time_coords_2.append(new_tuple)
+
+    return time_coords_2
+
+
 def cast_to_float(coords: str) -> Tuple[float, float]:
+
     coords = coords[1:-1]
     coords = coords.split(',')
     x = float(coords[0])
     y = float(coords[1])
     new_coords = (x, y)
+
     return new_coords
+
+
+def write_json(json_list: List[Dict]) -> None:
+
+    # Writes the list of dictionaries to a JSON file.
+    json_file = json.dumps(json_list, indent=2)
+
+    with open("trips.json", "w") as file:
+        file.write(json_file)

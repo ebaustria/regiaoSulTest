@@ -18,9 +18,10 @@ def build_list(stations: List[List[float]]) -> List[Dict]:
     return json_list
 
 
-def make_stops() -> None:
-    coords_list = coord_conversion.coordinate_list()
+def make_stops(gps_coordinates: str) -> None:
+
     stops = []
+    coords_list = coord_conversion.gps_list(gps_coordinates)
 
     with open("stations.wkt", 'r') as stations:
         stations = stations.readlines()
@@ -42,5 +43,5 @@ def make_stops() -> None:
 
     stops_json = json.dumps(result, indent=2)
 
-    with open("stops_brazil.json", "w") as file:
+    with open("stops.json", "w") as file:
         file.write(stops_json)
