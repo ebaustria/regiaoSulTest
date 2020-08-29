@@ -17,15 +17,10 @@ const DATA_URL = {
   //BUILDINGS:
   //  'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/buildings.json', // eslint-disable-line
   //TRIPS: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/trips-v7.json' // eslint-disable-line
-  //TRIPS: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/one_trace.json'
-  //TRIPS1: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/one_trace.json'
+  //TRIPS: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/one_trace.json',
   ROUTES: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/routes_brazil.json',
-  //ROUTES: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/routes_bagepedroosorio.json',
-  //ROUTES: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/route1_brazil.json',
-  TRIPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/one_trace_brazil.json',
-  //STOPS: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/single_stop_brazil.json'
-  STOPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/stops_brazil.json'
-  //STOPS: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/stops_brazil.json'
+  TRIPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/trips.json',
+  STOPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/stops.json'
 };
 
 const ICON_MAPPING = {
@@ -138,7 +133,7 @@ export default class App extends Component {
         data: trips,
         getPath: d => d.path,
         getTimestamps: d => d.timestamps,
-        getColor: d => (d.vendor === 0 ? theme.trailColor0 : theme.trailColor1),
+        getColor: [253, 128, 93], //d => (d.vendor === 0 ? theme.trailColor0 : theme.trailColor1),
         opacity: 1,
         widthMinPixels: 3,
         rounded: true,
