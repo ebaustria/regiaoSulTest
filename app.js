@@ -8,6 +8,8 @@ import {PolygonLayer} from '@deck.gl/layers';
 import {TripsLayer} from '@deck.gl/geo-layers';
 import {PathLayer} from '@deck.gl/layers';
 import {IconLayer} from '@deck.gl/layers';
+//import icon from './flag.png';
+import {ScatterplotLayer} from '@deck.gl/layers';
 
 // Set your mapbox token here
 const MAPBOX_TOKEN = "pk.eyJ1IjoiZXJpY2J1c2giLCJhIjoiY2thcXVzMGszMmJhZjMxcDY2Y2FrdXkwMSJ9.cwBqtbXpWJbtAEGli1AIIg"; // eslint-disable-line
@@ -20,7 +22,8 @@ const DATA_URL = {
   //TRIPS: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/one_trace.json',
   ROUTES: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/routes_brazil.json',
   TRIPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/trips.json',
-  STOPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/stops.json'
+  STOPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/stops_final.json',
+  ARRIVALS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/arrivals.json'
 };
 
 const ICON_MAPPING = {
@@ -58,7 +61,7 @@ const DEFAULT_THEME = {
 const INITIAL_VIEW_STATE = {
   longitude: -52.789164,
   latitude: -31.832282,
-  zoom: 13,
+  zoom: 9,
   pitch: 45,
   bearing: 0
 };
@@ -103,6 +106,7 @@ export default class App extends Component {
       routes = DATA_URL.ROUTES,
       buildings = DATA_URL.BUILDINGS,
       trips = DATA_URL.TRIPS,
+      arrivals = DATA_URL.ARRIVALS,
       trailLength = 720,
       theme = DEFAULT_THEME
     } = this.props;
@@ -115,6 +119,36 @@ export default class App extends Component {
         getPolygon: f => f,
         stroked: false,
         getFillColor: [0, 0, 0, 0]
+      }),
+      new ScatterplotLayer({
+        id: 'arrivals',
+        data: arrivals,
+        pickable: false,
+        opacity: 0.5,
+        stroked: false,
+        filled: true,
+        radiusScale: 6,
+        radiusMinPixels: 1,
+        radiusMaxPixels: 100,
+        lineWidthMinPixels: 1,
+        getPosition: d => d.coordinates,
+        getRadius: d => showArrival(d.timestamp, this.state.time),
+        getFillColor: d => [253, 128, 93],
+        getLineColor: d => [0, 0, 0],
+        currentTime: this.state.time,
+        getTimestamps: d => d.timestamp,
+        updateTriggers: {
+          getRadius: [d => showArrival(d.timestamp, this.state.time)]
+        },
+        transitions: {
+          getRadius: {
+            type: 'spring',
+            stiffness: 0.01,
+            damping: 0.15,
+            duration: 500,
+            enter: d => [0]
+          }
+        }
       }),
       new PathLayer({
         id: 'routes',
@@ -161,7 +195,7 @@ export default class App extends Component {
         iconMapping: ICON_MAPPING,
         getIcon: g => 'marker',
 
-        sizeScale: 15,
+        sizeScale: 10,
         getPosition: g => g.coordinates,
         getSize: g => 3,
         getColor: g => [255, 0, 0]
@@ -194,6 +228,13 @@ export default class App extends Component {
       </DeckGL>
     );
   }
+}
+
+function showArrival(timestamp, current) {
+  if (timestamp <= (current + 15) && timestamp >= current) {
+    return 500;
+  }
+  return 0;
 }
 
 export function renderToDOM(container) {
