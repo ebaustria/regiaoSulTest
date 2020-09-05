@@ -9,8 +9,6 @@ def build_list(stations: List[List[float]]) -> List[Dict]:
     for coord in stations:
         new_station = {
             "name": "stop name",
-            "address": "nowhere",
-            "exits": "1",
             "coordinates": coord
         }
         json_list.append(new_station)
