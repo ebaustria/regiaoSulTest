@@ -1,24 +1,12 @@
 from typing import List, Tuple, Dict
 import json
-import pprint
-
-pp = pprint.PrettyPrinter(indent=4)
 
 
-def make_trips(local_coordinates, gps_coordinates) -> None:
+def make_trips(local_coordinates: str, gps_coordinates: str) -> None:
 
-    final_coords = []
     timestamps = timestamps_list(local_coordinates)
     coords_list = gps_list(gps_coordinates)
-
-    # Makes a list of tuples containing the GPS coordinates and timestamps from the two lists defined above. Each tuple
-    # contains a name, a set of coordinates and a timestamp.
-    print("    Making list of GPS coordinates with timestamps...")
-    for name, coords, timestamp in timestamps:
-        for local, gps in coords_list:
-            if coords == local:
-                new = (name, gps, timestamp)
-                final_coords.append(new)
+    final_coords = final_list(timestamps, coords_list)
 
     # Makes dictionary out of data from final_coords. Coordinates and timestamps are mapped to vehicle names.
     new_dict = {}
@@ -106,6 +94,23 @@ def timestamps_list(local_coordinates: str) -> List[Tuple[str, Tuple[float, floa
     return time_coords_2
 
 
+# Makes a list of tuples containing the GPS coordinates and timestamps from the two lists passed as parameters. Each
+# tuple contains a name, a set of GPS coordinates and a timestamp.
+def final_list(timestamps: List[Tuple[str, Tuple[float, float], float]],
+               coords_list: List[Tuple[Tuple[float, float], List[float]]]) -> List[Tuple[str, List[float], float]]:
+    final_coords = []
+
+    print("    Making list of GPS coordinates with timestamps...")
+    for name, coords, timestamp in timestamps:
+        for local, gps in coords_list:
+            if coords == local:
+                new = (name, gps, timestamp)
+                final_coords.append(new)
+
+    return final_coords
+
+
+# Converts a tuple of strings to a tuple of floats.
 def cast_to_float(coords: str) -> Tuple[float, float]:
 
     coords = coords[1:-1]
@@ -117,9 +122,9 @@ def cast_to_float(coords: str) -> Tuple[float, float]:
     return new_coords
 
 
+# Writes the list of dictionaries to a JSON file.
 def write_json(json_list: List[Dict]) -> None:
 
-    # Writes the list of dictionaries to a JSON file.
     json_file = json.dumps(json_list, indent=2)
 
     with open("trips.json", "w") as file:
