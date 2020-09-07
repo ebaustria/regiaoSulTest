@@ -1,8 +1,6 @@
 [
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -54.106236,
       -31.331718
@@ -10,8 +8,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -53.585572,
       -31.732389
@@ -19,8 +15,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -53.512403,
       -31.868561
@@ -28,8 +22,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -53.395237,
       -32.025773
@@ -37,8 +29,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -53.376976,
       -32.566474
@@ -46,8 +36,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -53.38228,
       -31.578983
@@ -55,8 +43,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -53.180204,
       -31.464436
@@ -64,8 +50,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -53.104176,
       -31.448516
@@ -73,8 +57,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -53.086325,
       -32.238502
@@ -82,8 +64,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -52.871595,
       -31.956868
@@ -91,8 +71,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -52.834517,
       -31.729593
@@ -100,8 +78,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -52.821823,
       -31.861731
@@ -109,8 +85,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -52.815038,
       -31.854553
@@ -118,8 +92,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -52.791532,
       -31.353468
@@ -127,8 +99,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -52.675004,
       -31.851127
@@ -136,8 +106,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -52.677099,
       -31.398296
@@ -145,8 +113,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -52.643772,
       -31.885771
@@ -154,8 +120,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -52.538301,
       -31.574929
@@ -163,8 +127,6 @@
   },
   {
     "name": "stop name",
-    "address": "nowhere",
-    "exits": "1",
     "coordinates": [
       -52.357408,
       -31.756258
