@@ -7,7 +7,7 @@ Steps for creating a deck.gl visualization:
 
 2. Clone the repository located at https://github.com/ebaustria/deck.gl.git.
 
-3. Clone the repository located at https://github.com/ebaustria/the-one/tree/longDistance.
+3. Clone the repository located at https://github.com/ebaustria/the-one.git.
 
 4. Navigate to the-one in the terminal, switch to the branch called ```longDistance``` and open ```the-one/default_settings.txt```. Scroll down to line 105 and make sure ```Report.report1``` is set to ```LocalCoordinatesReport```.
 
@@ -15,7 +15,7 @@ Steps for creating a deck.gl visualization:
 
 6. Navigate to ```the-one/reports```. Find the report mentioned in the previous step. It should be the most recent report and its name should end with ```LocalCoordinatesReport.txt```. If it is your first time running the simulation, it should be the only file in ```the-one/reports```. Rename the report as ```local_coordinates_brazil.txt```. Move this file to the ```regiaoSul``` repository.
 
-7. Navigate to ```the-one/data/regiaoSul```. Find ```stations.wkt``` and ```cities.wkt``` and copy them to the ```regiaoSul``` repository. Navigate to that repository in the terminal or open it in an IDE.
+7. Navigate to ```the-one/data/regiaoSul```. Find ```stations.wkt``` and ```cities.wkt``` and copy them to the ```regiaoSul``` repository. Do not change the name of either file. Navigate to ```regiaoSul``` in the terminal or open it in an IDE.
 
 8. Run ```readMap.py```. On line 136 of ```readMap.py```, this will write a file called ```gps_coordinates_brazil.csv```. ```gps_coordinates_brazil.csv``` is a mapping of the local coordinates of each node (used in the ONE and taken from ```local_coordinates_brazil.txt```) to that node's corresponding GPS coordinates. The GPS coordinates are needed for the deck visualization. Running ```readMap.py``` also writes a WKT linestring file for each route that consists of GPS coordinates. These files are written on line 132 within a for loop. The WKT linestring file names have the format ```route_name + _gps_nodes.wkt```.
 
@@ -23,6 +23,6 @@ Steps for creating a deck.gl visualization:
 
 10. Push the four JSON files to a remote GitHub repository.
 
-11. Open ```app.js```. Its path should be ```deck.gl/examples/website/trips/app.js```. Open the raw data for each JSON file in the remote GitHub repository from the previous step and copy each URL to the ```DATA_URL``` constant in ```app.js```. The properties of each layer will also need to be included in the ```renderLayers()``` function in ```app.js```. The current version of ```app.js``` is located in the ```regiaoSul``` repository and can be consulted for an example. If you would like to do an easier version of this step, you should be able to navigate to ```deck.gl/examples/website/trips``` and replace the version of ```app.js``` that is located there with the version of ```app.js``` that is located in ```regiaoSul```.
+11. Open ```app.js```. Its path should be ```deck.gl/examples/website/trips/app.js```. Open the raw data for each JSON file in the remote GitHub repository from the previous step and copy each raw data URL to the ```DATA_URL``` constant in ```app.js```. The properties of each layer will also need to be included in the ```renderLayers()``` function in ```app.js```. The current version of ```app.js``` is located in the ```regiaoSul``` repository and can be consulted for an example. https://deck.gl/docs/api-reference/layers can also be consulted for more information on deck.gl's layers and their properties. If you would like to do an easier version of this step, you should be able to navigate to ```deck.gl/examples/website/trips``` and replace the version of ```app.js``` that is located there with the version of ```app.js``` that is located in ```regiaoSul```.
 
 12. Navigate to ```deck.gl/examples/website/trips``` in the terminal, install the dependencies using ```npm install``` and run the visualization using ```npm start```. https://deck.gl/docs can be consulted for more information, if necessary.
