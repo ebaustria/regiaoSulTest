@@ -1,6 +1,6 @@
 from typing import List, Dict
 import json
-import wkt_parser
+import lib.wkt_parser as wkt
 import pprint
 import random
 
@@ -35,7 +35,7 @@ def make_routes() -> None:
     route_list = []
     with open("CerritoPassoDasPedrasFaixaPelotas_gps_nodes.wkt", 'r') as cerrito_pelotas:
         nodes = cerrito_pelotas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [255, 0, 0]
 
@@ -43,7 +43,7 @@ def make_routes() -> None:
 
     with open("PiratiniPelotas_gps_nodes.wkt", 'r') as piratini_pelotas:
         nodes = piratini_pelotas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [0, 255, 0]
 
@@ -51,7 +51,7 @@ def make_routes() -> None:
 
     with open("PiratiniPinheiroMachadoviaJoaoSaraiva_gps_nodes.wkt", 'r') as piratini_saraiva:
         nodes = piratini_saraiva.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [0, 0, 255]
 
@@ -59,7 +59,7 @@ def make_routes() -> None:
 
     with open("PelotasPedroOsorioPiratini_gps_nodes.wkt", 'r') as pelotas_piratini:
         nodes = pelotas_piratini.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [150, 0, 150]
 
@@ -67,7 +67,7 @@ def make_routes() -> None:
 
     with open("PedroOsorioBage_gps_nodes.wkt", 'r') as pedro_bage:
         nodes = pedro_bage.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [255, 255, 0]
 
@@ -75,7 +75,7 @@ def make_routes() -> None:
 
     with open("PedroOsorioPelotas_gps_nodes.wkt", 'r') as pedro_pelotas:
         nodes = pedro_pelotas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [0, 255, 255]
 
@@ -83,7 +83,7 @@ def make_routes() -> None:
 
     with open("JaguaraoPelotas_gps_nodes.wkt", 'r') as jaguarao_pelotas:
         nodes = jaguarao_pelotas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [255, 153, 255]
 
@@ -91,7 +91,7 @@ def make_routes() -> None:
 
     with open("JaguaraoArroioGrande_gps_nodes.wkt", 'r') as jaguarao_grande:
         nodes = jaguarao_grande.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [255, 255, 255]
 
@@ -99,7 +99,7 @@ def make_routes() -> None:
 
     with open("HervalArroioGrande_gps_nodes.wkt", 'r') as herval_grande:
         nodes = herval_grande.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [204, 0, 102]
 
@@ -107,7 +107,7 @@ def make_routes() -> None:
 
     with open("CangucuPelotas_gps_nodes.wkt", 'r') as cangucu_pelotas:
         nodes = cangucu_pelotas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [153, 76, 0]
 
@@ -115,7 +115,7 @@ def make_routes() -> None:
 
     with open("ArroioGrandePelotas_gps_nodes.wkt", 'r') as arroio_pelotas:
         nodes = arroio_pelotas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [0, 153, 0]
 
@@ -123,7 +123,7 @@ def make_routes() -> None:
 
     with open("CerritoPedroOsorio_gps_nodes.wkt", 'r') as cerrito_osorio:
         nodes = cerrito_osorio.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [178, 102, 255]
 
@@ -131,7 +131,7 @@ def make_routes() -> None:
 
     with open("PiratiniCerrito_gps_nodes.wkt", 'r') as piratini_cerrito:
         nodes = piratini_cerrito.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [255, 0, 255]
 
@@ -139,7 +139,7 @@ def make_routes() -> None:
 
     with open("PinheiroMachadoPedrasAltasHervalJaguarao_gps_nodes.wkt", 'r') as pinheiro_jaguarao:
         nodes = pinheiro_jaguarao.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [0, 204, 153]
 
@@ -147,7 +147,7 @@ def make_routes() -> None:
 
     with open("PinheiroMachadoPedrasAltas_gps_nodes.wkt", 'r') as pinheiro_altas:
         nodes = pinheiro_altas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [255, 128, 0]
 
@@ -155,7 +155,7 @@ def make_routes() -> None:
 
     with open("PedrasAltasHerval_gps_nodes.wkt", 'r') as pedras_herval:
         nodes = pedras_herval.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [160, 160, 160]
 
@@ -163,7 +163,7 @@ def make_routes() -> None:
 
     with open("JaguaraoPedroOsorio_gps_nodes.wkt", 'r') as jaguarao_osorio:
         nodes = jaguarao_osorio.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [102, 178, 255]
 
@@ -171,7 +171,7 @@ def make_routes() -> None:
 
     with open("HervalPedroOsorio_gps_nodes.wkt", 'r') as herval_osorio:
         nodes = herval_osorio.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [255, 0, 127]
 
@@ -179,7 +179,7 @@ def make_routes() -> None:
 
     with open("CangucuPiratini_gps_nodes.wkt", 'r') as cangucu_piratini:
         nodes = cangucu_piratini.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [0, 102, 102]
 
@@ -187,7 +187,7 @@ def make_routes() -> None:
 
     with open("BagePelotas_gps_nodes.wkt", 'r') as bage_pelotas:
         nodes = bage_pelotas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [51, 255, 153]
 
@@ -195,7 +195,7 @@ def make_routes() -> None:
 
     with open("ArroioGrandePedroOsorio_gps_nodes.wkt", 'r') as arroio_osorio:
         nodes = arroio_osorio.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [255, 102, 102]
 
@@ -203,7 +203,7 @@ def make_routes() -> None:
 
     with open("BagePedroOsorioArroioGrandeJaguarao_gps_nodes.wkt", 'r') as bage_jaguarao:
         nodes = bage_jaguarao.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [153, 153, 255]
 
@@ -211,7 +211,7 @@ def make_routes() -> None:
 
     with open("BagePiratini_gps_nodes.wkt", 'r') as bage_piratini:
         nodes = bage_piratini.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [153, 0, 0]
 
@@ -219,7 +219,7 @@ def make_routes() -> None:
 
     with open("BagePinheiroMachadoPelotas_gps_nodes.wkt", 'r') as bage_pinheiro_pelotas:
         nodes = bage_pinheiro_pelotas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [102, 0, 51]
 
@@ -227,7 +227,7 @@ def make_routes() -> None:
 
     with open("HervalPedroOsorioPelotas_gps_nodes.wkt", 'r') as herval_pelotas:
         nodes = herval_pelotas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [102, 102, 0]
 
@@ -235,7 +235,7 @@ def make_routes() -> None:
 
     with open("HervalArroioGrandePelotas_gps_nodes.wkt", 'r') as herval_arroio_pelotas:
         nodes = herval_arroio_pelotas.read()
-        nodes_list = wkt_parser.parse_wkt_route(nodes)
+        nodes_list = wkt.parse_wkt_route(nodes)
         #color = make_color()
         color = [153, 255, 51]
 

@@ -2,6 +2,7 @@
 from geopy import distance
 from typing import List, Tuple, Set
 
+
 class Projector:
 
     lat_min = 90
@@ -30,7 +31,6 @@ class Projector:
         )
         return width.m, height.m
 
-
     def transform_coords(self, coords: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
         new_coords = []
         for c in coords:
@@ -46,4 +46,3 @@ class Projector:
             # Debug
             #print("({},{}) --> ({},{})".format(c[0], c[1], newC0, newC1))
         return new_coords
-
