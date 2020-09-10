@@ -78,7 +78,6 @@ Open ```deck.gl/examples/website/trips/app.js```. Open the raw data for each JSO
 Navigate to ```deck.gl/examples/website/trips``` in the terminal, install the dependencies, and run the visualization:
 
 ```
-cd deck.gl/examples/website/trips
 npm install
 npm start
 ```
