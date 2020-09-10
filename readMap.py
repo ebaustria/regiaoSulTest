@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
-from lib.project import Projector
+# from lib.project import Projector
+from lib import project
 from lib import writer
 import os
 import datetime
@@ -108,7 +109,7 @@ for fname in ['HervalArroioGrandePelotas.gpx',
         routes_latlon[route_name]['nodes'].append(point)
         points.add(point)
 
-proj = Projector(precision=2)
+proj = project.Projector(precision=2)
 width, height = proj.init_dimensions(points)
         
 print(width, height)
