@@ -4,12 +4,13 @@ import lib.coord_conversion as cc
 import lib.wkt_parser as wkt
 
 
-def build_list(stations: List[List[float]]) -> List[Dict]:
-    json_list = []
-    for coord in stations:
+def build_list(stops: List[List[float]], color: List[int], json_list: List[Dict]) -> List[Dict]:
+
+    for coord in stops:
         new_station = {
             "name": "stop name",
-            "coordinates": coord
+            "coordinates": coord,
+            "color": color
         }
         json_list.append(new_station)
 
@@ -18,7 +19,9 @@ def build_list(stations: List[List[float]]) -> List[Dict]:
 
 def make_stops(gps_coordinates: str) -> None:
 
-    stops = []
+    result = []
+    stations_list = []
+    cities_list = []
     coords_list = cc.gps_list(gps_coordinates)
 
     with open("stations.wkt", 'r') as stations:
@@ -32,12 +35,13 @@ def make_stops(gps_coordinates: str) -> None:
     for local, gps in coords_list:
         for station in stations:
             if local[0] == station[0] and local[1] == station[1]:
-                stops.append(gps)
+                stations_list.append(gps)
         for city in cities:
             if local[0] == city[0] and local[1] == city[1]:
-                stops.append(gps)
+                cities_list.append(gps)
 
-    result = build_list(stops)
+    result = build_list(stations_list, [0, 255, 255], result)
+    result = build_list(cities_list, [255, 0, 0], result)
 
     stops_json = json.dumps(result, indent=2)
 
