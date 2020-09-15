@@ -18,7 +18,9 @@ def message_json(local_coordinates: str, gps_coordinates: str, notification: str
 
         dict_list.append(new_dict)
 
-    file_name = notification + ".json"
+    notification = notification.split()
+
+    file_name = notification[0] + "_" + notification[1] + ".json"
     json_file = json.dumps(dict_list, indent=2)
 
     with open(file_name, "w") as file:
