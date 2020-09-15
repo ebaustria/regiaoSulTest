@@ -8,6 +8,7 @@ import {PolygonLayer} from '@deck.gl/layers';
 import {TripsLayer} from '@deck.gl/geo-layers';
 import {PathLayer} from '@deck.gl/layers';
 import {IconLayer} from '@deck.gl/layers';
+import {TextLayer} from '@deck.gl/layers';
 //import icon from './flag.png';
 import {ScatterplotLayer} from '@deck.gl/layers';
 
@@ -21,6 +22,7 @@ const DATA_URL = {
   //TRIPS: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/trips-v7.json' // eslint-disable-line
   //TRIPS: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/one_trace.json',
   ROUTES: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/routes_brazil.json',
+  CREATED: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/creating_message.json',
   TRIPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/trips.json',
   STOPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/stops_final.json',
   ARRIVALS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/arrivals.json'
@@ -107,6 +109,7 @@ export default class App extends Component {
       buildings = DATA_URL.BUILDINGS,
       trips = DATA_URL.TRIPS,
       arrivals = DATA_URL.ARRIVALS,
+      created = DATA_URL.CREATED,
       trailLength = 720,
       theme = DEFAULT_THEME
     } = this.props;
@@ -128,17 +131,17 @@ export default class App extends Component {
         stroked: false,
         filled: true,
         radiusScale: 6,
-        radiusMinPixels: 1,
+        radiusMinPixels: 0,
         radiusMaxPixels: 100,
         lineWidthMinPixels: 1,
         getPosition: d => d.coordinates,
-        getRadius: d => showArrival(d.timestamp, this.state.time),
+        getRadius: d => isVisible(d.timestamp, this.state.time, 15, 500),
         getFillColor: d => [253, 128, 93],
         getLineColor: d => [0, 0, 0],
         currentTime: this.state.time,
         getTimestamps: d => d.timestamp,
         updateTriggers: {
-          getRadius: [d => showArrival(d.timestamp, this.state.time)]
+          getRadius: [d => isVisible(d.timestamp, this.state.time, 15, 500)]
         },
         transitions: {
           getRadius: {
@@ -153,7 +156,7 @@ export default class App extends Component {
       new PathLayer({
         id: 'routes',
         data: routes,
-        pickable: true,
+        pickable: false,
         widthScale: 20,
         widthMinPixels: 3,
         rounded: true,
@@ -198,7 +201,35 @@ export default class App extends Component {
         sizeScale: 10,
         getPosition: g => g.coordinates,
         getSize: g => 3,
-        getColor: g => [255, 0, 0]
+        getColor: g => g.color,
+        getPixelOffset: [0, -10]
+      }),
+      new TextLayer({
+        id: 'created',
+        data: created,
+        pickable: false,
+        getPosition: d => d.coordinates,
+        getText: d => d.notification,
+        getSize: 16,
+        getAngle: 0,
+        getColor: d => [0, 0, 0, isVisible(d.timestamp, this.state.time, 10, 255)],
+        backgroundColor: [255, 255, 255],
+        getTextAnchor: 'middle',
+        getAlignmentBaseline: 'center',
+        updateTriggers: {
+          getColor: [d => [0, 0, 0, isVisible(d.timestamp, this.state.time, 10, 255)]]
+        }
+        /*
+        transitions: {
+          getColor: {
+            type: 'spring',
+            stiffness: 0.01,
+            damping: 0.15,
+            duration: 300,
+            enter: d => [0, 0, 0, isVisible(d.timestamp, this.state.time, 10, 255)]
+          }
+        }
+        */
       })
     ];
   }
@@ -230,9 +261,9 @@ export default class App extends Component {
   }
 }
 
-function showArrival(timestamp, current) {
-  if (timestamp <= (current + 15) && timestamp >= current) {
-    return 500;
+function isVisible(timestamp, current, tolerance, size) {
+  if (timestamp <= (current + tolerance) && timestamp >= current) {
+    return size;
   }
   return 0;
 }
