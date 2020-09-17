@@ -93,9 +93,9 @@ import {ScatterplotLayer} from '@deck.gl/layers';
 
 You will need a mapbox token to see the base map. Create a mapbox token at https://www.mapbox.com/ if you don't already have one and set the token in ```app.js``` directly beneath the imports:
 
-```
+<pre>
 const MAPBOX_TOKEN = "<i>your_mapbox_token</i>";
-```
+</pre>
 
 **Note**: Be sure to enclose the mapbox token in quotes.
 
@@ -107,21 +107,22 @@ TRIPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/trips.json'
 
 In general, ```DATA_URL``` and the constants defined within it should have the following structure:
 
-```
+<pre>
 const DATA_URL = {
   <i>CONST_NAME</i>: 'https://raw.githubusercontent.com/<i>your_github_profile</i>/<i>your_remote_repository</i>/<i>branch</i>/<i>your_data.json</i>',
   ...
 };
-```
+</pre>
 
 **Note**: Do not forget to add commas in between constant references.
 
 Scroll down to ```export default function App```. At the beginning of the function, use the previously defined constant references to define variables to pass to each layer instance:
 
-```
-<i>data_variable</i> = DATA_URL.<i>CONST_NAME</i>,
-...
-```
+<pre>
+export default function App({
+  <i>data_variable</i> = DATA_URL.<i>CONST_NAME</i>,
+  ...
+</pre>
 
 The final step is to initialize each layer instance in the ```layer``` constant and provide its respective properties. The correspondence between the datasets and the layers is as follows:
 
@@ -160,7 +161,7 @@ The name that is assigned to ```data:``` should correspond to one of the URL var
 ### PathLayer
 The general template for the PathLayer's properties is:
 
-```
+<pre>
     new PathLayer({
       id: '<i>layer_id</i>',
       data: <i>your_variable_name</i>,
@@ -170,12 +171,12 @@ The general template for the PathLayer's properties is:
       getColor: e => e.color,  //do not edit
       getWidth: 3           //the width of each path in meters
     }),
-```
+</pre>
 
 ### IconLayer
 The general template for the IconLayer's properties is:
 
-```
+<pre>
     new IconLayer({
       id: '<i>layer_id</i>',
       data: <i>your_variable_name</i>,
@@ -186,9 +187,9 @@ The general template for the IconLayer's properties is:
       getPosition: g => g.coordinates,  //do not edit
       getSize: g => 3,
       getColor: g => g.color,           //do not edit
-      getPixelOffset: [0, -10]
+      getPixelOffset: [0, -10]          //offsets the icon 10 pixels upward
     }),
-```
+</pre>
 
 Also make sure to add the following lines below ```DATA_URL```:
 
@@ -201,7 +202,7 @@ const ICON_MAPPING = {
 ### ScatterplotLayer
 The general template for the ScatterplotLayer's properties is:
 
-```
+<pre>
     new ScatterplotLayer({
       id: '<i>layer_id</i>',
       data: <i>your_variable_name</i>,
@@ -224,12 +225,12 @@ The general template for the ScatterplotLayer's properties is:
         }
       }
     }),
-```
+</pre>
 
 ### TextLayer
 The general template for the TextLayer's properties is:
 
-```
+<pre>
     new TextLayer({
       id: '<i>layer_id</i>',
       data: <i>your_variable_name</i>,
@@ -244,7 +245,7 @@ The general template for the TextLayer's properties is:
         getColor: [d => [0, 0, 0, isVisible(d.timestamp, time, 15, 255)]]  //only edit last two parameters in function call
       }
     }),
-```
+</pre>
 
 A functioning version of ```app.js``` is located in the ```regiaoSul``` repository and can be consulted for an example.
 
