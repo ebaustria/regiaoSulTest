@@ -13,7 +13,7 @@ import {TextLayer} from '@deck.gl/layers';
 import {ScatterplotLayer} from '@deck.gl/layers';
 
 // Set your mapbox token here
-const MAPBOX_TOKEN = "pk.eyJ1IjoiZXJpY2J1c2giLCJhIjoiY2thcXVzMGszMmJhZjMxcDY2Y2FrdXkwMSJ9.cwBqtbXpWJbtAEGli1AIIg"; // eslint-disable-line
+const MAPBOX_TOKEN = "pk.eyJ1IjoiZXJpY2J1c2giLCJhIjoiY2thcXVzMGszMmJhZjMxcDY2Y2FrdXkwMSJ9.cwBqtbXpWJbtAEGli1AIIg";
 
 // Source data CSV
 const DATA_URL = {
@@ -22,10 +22,11 @@ const DATA_URL = {
   //TRIPS: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/trips-v7.json' // eslint-disable-line
   //TRIPS: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/one_trace.json',
   ROUTES: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/routes_brazil.json',
-  CREATED: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/creating_message.json',
+  CREATED: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/messages/creating_message.json',
   TRIPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/trips.json',
   STOPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/stops_final.json',
   ARRIVALS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/arrivals.json'
+  //CARRIED: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/carried_messages.json'
 };
 
 const ICON_MAPPING = {
@@ -91,7 +92,7 @@ export default class App extends Component {
   _animate() {
     const {
       loopLength = 604800, // unit corresponds to the timestamp in source data
-      animationSpeed = 30 // unit time per second
+      animationSpeed = 60 // unit time per second
     } = this.props;
     const timestamp = Date.now() / 1000;
     const loopTime = loopLength / animationSpeed;
@@ -106,10 +107,10 @@ export default class App extends Component {
     const {
       stops = DATA_URL.STOPS,
       routes = DATA_URL.ROUTES,
-      buildings = DATA_URL.BUILDINGS,
       trips = DATA_URL.TRIPS,
       arrivals = DATA_URL.ARRIVALS,
       created = DATA_URL.CREATED,
+      //carried_messages = DATA_URL.CARRIED,
       trailLength = 720,
       theme = DEFAULT_THEME
     } = this.props;
@@ -126,29 +127,24 @@ export default class App extends Component {
       new ScatterplotLayer({
         id: 'arrivals',
         data: arrivals,
-        pickable: false,
-        opacity: 0.5,
-        stroked: false,
-        filled: true,
         radiusScale: 6,
         radiusMinPixels: 0,
         radiusMaxPixels: 100,
-        lineWidthMinPixels: 1,
         getPosition: d => d.coordinates,
-        getRadius: d => isVisible(d.timestamp, this.state.time, 15, 500),
+        getRadius: d => isVisible(d.timestamp, this.state.time, 30, 500),
         getFillColor: d => [253, 128, 93],
         getLineColor: d => [0, 0, 0],
         currentTime: this.state.time,
         getTimestamps: d => d.timestamp,
         updateTriggers: {
-          getRadius: [d => isVisible(d.timestamp, this.state.time, 15, 500)]
+          getRadius: [d => isVisible(d.timestamp, this.state.time, 30, 500)]
         },
         transitions: {
           getRadius: {
             type: 'spring',
             stiffness: 0.01,
             damping: 0.15,
-            duration: 500,
+            duration: 200,
             enter: d => [0]
           }
         }
@@ -156,14 +152,11 @@ export default class App extends Component {
       new PathLayer({
         id: 'routes',
         data: routes,
-        pickable: false,
-        widthScale: 20,
         widthMinPixels: 3,
         rounded: true,
         getPath: e => e.path,
         getColor: e => e.color, //colorToRGBArray(d.color),
-        opacity: 0.1,
-        getWidth: e => 1
+        getWidth: 3
       }),
       new TripsLayer({
         id: 'trips',
@@ -176,19 +169,8 @@ export default class App extends Component {
         rounded: true,
         trailLength,
         currentTime: this.state.time,
-
+        getWidth: 3,
         shadowEnabled: false
-      }),
-      new PolygonLayer({
-        id: 'buildings',
-        data: buildings,
-        extruded: true,
-        wireframe: false,
-        opacity: 0.5,
-        getPolygon: f => f.polygon,
-        getElevation: f => f.height,
-        getFillColor: theme.buildingColor,
-        material: theme.material
       }),
       new IconLayer({
         id: 'stops',
@@ -197,36 +179,51 @@ export default class App extends Component {
         iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
         iconMapping: ICON_MAPPING,
         getIcon: g => 'marker',
-
         sizeScale: 10,
         getPosition: g => g.coordinates,
         getSize: g => 3,
         getColor: g => g.color,
         getPixelOffset: [0, -10]
       }),
+      /*
+      new TextLayer({
+        id: 'carried_messages',
+        data: carried_messages,
+        pickable: false,
+        getPosition: d => d.coordinates,
+        getText: d => d.messages,
+        getSize: 20,
+        getAngle: 0,
+        getColor: d => [(Number(d.messages) * 3), 0, 0, isVisible(d.timestamp, this.state.time, 5, 255)],
+        //backgroundColor: [255, 255, 255],
+        getTextAnchor: 'middle',
+        getAlignmentBaseline: 'top',
+        getPixelOffset: [0, 3],
+        updateTriggers: {
+          getColor: [d => [(Number(d.messages) * 3), 0, 0, isVisible(d.timestamp, this.state.time, 5, 255)]]
+        }
+      }),
+      */
       new TextLayer({
         id: 'created',
         data: created,
-        pickable: false,
         getPosition: d => d.coordinates,
         getText: d => d.notification,
         getSize: 16,
-        getAngle: 0,
-        getColor: d => [0, 0, 0, isVisible(d.timestamp, this.state.time, 10, 255)],
+        getColor: d => [0, 0, 0, isVisible(d.timestamp, this.state.time, 50, 255)],
         backgroundColor: [255, 255, 255],
         getTextAnchor: 'middle',
-        getAlignmentBaseline: 'center',
+        getAlignmentBaseline: 'top',
+        getPixelOffset: [0, 3],
         updateTriggers: {
-          getColor: [d => [0, 0, 0, isVisible(d.timestamp, this.state.time, 10, 255)]]
+          getColor: [d => [0, 0, 0, isVisible(d.timestamp, this.state.time, 50, 255)]]
         }
         /*
         transitions: {
           getColor: {
             type: 'spring',
-            stiffness: 0.01,
-            damping: 0.15,
-            duration: 300,
-            enter: d => [0, 0, 0, isVisible(d.timestamp, this.state.time, 10, 255)]
+            duration: 0,
+            enter: d => [0]
           }
         }
         */

@@ -9,7 +9,7 @@ def message_json(local_coordinates: str, gps_coordinates: str, notification: str
     message_gps = cc.gps_list(gps_coordinates)
     message_final_coords = cc.final_list(message_timestamps, message_gps)
 
-    for name, gps, timestamp in message_final_coords:
+    for name, gps, timestamp, messages in message_final_coords:
         new_dict = {}
         new_dict["name"] = name
         new_dict["coordinates"] = gps
