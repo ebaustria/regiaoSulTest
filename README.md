@@ -81,6 +81,8 @@ deck.gl uses special classes called layers to visualize datasets. Each layer cla
 
 Open ```deck.gl/examples/website/trips/app.js```. We need to modify ```app.js``` to get it to visualize our data.
 
+**Note**: A functioning version of ```app.js``` is located in the ```regiaoSul``` repository and can be consulted for an example. If you would like to skip the rest of this section, you should be able to navigate to ```deck.gl/examples/website/trips``` and replace the version of ```app.js``` that is located there with the version of ```app.js``` that is located in ```regiaoSul```. Once you have replaced ```app.js``` you can continue with these steps starting at "Running the Visualization".
+
 First, make sure the necessary layer classes are imported at the top of the file:
 
 ```
@@ -249,13 +251,9 @@ The general template for the TextLayer's properties is:
     }),
 </pre>
 
-A functioning version of ```app.js``` is located in the ```regiaoSul``` repository and can be consulted for an example.
-
 **Note**: Layer IDs must be unique.
 
 **Note**: Each of the layers presented here has additional properties that have not been included in any of the above code samples. The information provided here is only intended to help users create a working visualization. https://deck.gl/docs/api-reference/layers can be consulted for more information on deck.gl's layers, their properties, and how to modify them.
-
-**Note**: If you would like to do a simpler version of this step, you should be able to navigate to ```deck.gl/examples/website/trips``` and replace the version of ```app.js``` that is located there with the version of ```app.js``` that is located in ```regiaoSul```.
 
 ## Running the Visualization
 Navigate to ```deck.gl/examples/website/trips```, install the dependencies, and run the visualization:
