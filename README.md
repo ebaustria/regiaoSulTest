@@ -173,6 +173,8 @@ The general template for the PathLayer's properties is:
     }),
 </pre>
 
+**Note**: The ordering of the layer initializations within ```layer``` seems to affect the visibility of some layers. For this reason, it is best to initialize the PathLayer **before** you initialize the TripsLayer in your code.
+
 ### IconLayer
 The general template for the IconLayer's properties is:
 
@@ -249,7 +251,7 @@ The general template for the TextLayer's properties is:
 
 A functioning version of ```app.js``` is located in the ```regiaoSul``` repository and can be consulted for an example.
 
-**Note**: The TextLayer is still being worked on.
+**Note**: Layer IDs must be unique.
 
 **Note**: Each of the layers presented here has additional properties that have not been included in any of the above code samples. The information provided here is only intended to help users create a working visualization. https://deck.gl/docs/api-reference/layers can be consulted for more information on deck.gl's layers, their properties, and how to modify them.
 
