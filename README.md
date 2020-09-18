@@ -212,10 +212,10 @@ The general template for the ScatterplotLayer's properties is:
       radiusMinPixels: 0,     //the minimum circle radius in pixels that deck.gl will display
       radiusMaxPixels: 100,   //the maximum circle radius in pixels that deck.gl will display
       getPosition: d => d.coordinates,                         //do not edit
-      getRadius: d => isVisible(d.timestamp, time, 30, 600),   //only edit last two parameters in function call
+      getRadius: d => isVisible(d.timestamp, time, 70, 600),   //only edit last two parameters in function call
       getFillColor: d => [253, 128, 93],
       updateTriggers: {
-        getRadius: [d => isVisible(d.timestamp, time, 30, 600)]   //only edit last two parameters in function call
+        getRadius: [d => isVisible(d.timestamp, time, 70, 600)]   //only edit last two parameters in function call
       },
       transitions: {
         getRadius: {
@@ -239,12 +239,12 @@ The general template for the TextLayer's properties is:
       getPosition: d => d.coordinates,    //do not edit
       getText: d => d.notification,       //do not edit
       getSize: 16,
-      getColor: d => [0, 0, 0, isVisible(d.timestamp, time, 15, 255)],     //only edit last two parameters in function call
+      getColor: d => [0, 0, 0, isVisible(d.timestamp, time, 30, 255)],     //only edit last two parameters in function call
       backgroundColor: [255, 255, 255],
       getTextAnchor: 'middle',            //determines where the text is displayed relative to the object's position ('start', 'middle', or 'end')
       getAlignmentBaseline: 'center',     //determines where the text is displayed relative to the object's position ('top', 'center', or 'bottom')
       updateTriggers: {
-        getColor: [d => [0, 0, 0, isVisible(d.timestamp, time, 15, 255)]]  //only edit last two parameters in function call
+        getColor: [d => [0, 0, 0, isVisible(d.timestamp, time, 30, 255)]]  //only edit last two parameters in function call
       }
     }),
 </pre>
