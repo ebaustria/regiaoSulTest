@@ -9,7 +9,6 @@ import {TripsLayer} from '@deck.gl/geo-layers';
 import {PathLayer} from '@deck.gl/layers';
 import {IconLayer} from '@deck.gl/layers';
 import {TextLayer} from '@deck.gl/layers';
-//import icon from './flag.png';
 import {ScatterplotLayer} from '@deck.gl/layers';
 
 // Set your mapbox token here
@@ -22,12 +21,14 @@ const DATA_URL = {
   //TRIPS: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/trips/trips-v7.json' // eslint-disable-line
   //TRIPS: 'https://raw.githubusercontent.com/ebaustria/coord_conversion/master/one_trace.json',
   ROUTES: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/routes_brazil.json',
-  CREATED: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/messages/creating_message.json',
+  MESSAGES: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/messages/messages.json',
   TRIPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/trips.json',
   STOPS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/stops_final.json',
   ARRIVALS: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/arrivals.json'
   //CARRIED: 'https://raw.githubusercontent.com/ebaustria/regiaoSul/master/carried_messages.json'
 };
+
+//var text_vis = 0;
 
 const ICON_MAPPING = {
   marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
@@ -109,7 +110,7 @@ export default class App extends Component {
       routes = DATA_URL.ROUTES,
       trips = DATA_URL.TRIPS,
       arrivals = DATA_URL.ARRIVALS,
-      created = DATA_URL.CREATED,
+      messages = DATA_URL.MESSAGES,
       //carried_messages = DATA_URL.CARRIED,
       trailLength = 720,
       theme = DEFAULT_THEME
@@ -131,21 +132,20 @@ export default class App extends Component {
         radiusMinPixels: 0,
         radiusMaxPixels: 100,
         getPosition: d => d.coordinates,
-        getRadius: d => isVisible(d.timestamp, this.state.time, 30, 500),
+        getRadius: d => isVisible(d.timestamp, this.state.time, 40, 500),
         getFillColor: d => [253, 128, 93],
         getLineColor: d => [0, 0, 0],
         currentTime: this.state.time,
         getTimestamps: d => d.timestamp,
         updateTriggers: {
-          getRadius: [d => isVisible(d.timestamp, this.state.time, 30, 500)]
+          getRadius: [d => isVisible(d.timestamp, this.state.time, 40, 500)]
         },
         transitions: {
           getRadius: {
             type: 'spring',
             stiffness: 0.01,
             damping: 0.15,
-            duration: 200,
-            enter: d => [0]
+            duration: 200
           }
         }
       }),
@@ -183,7 +183,7 @@ export default class App extends Component {
         getPosition: g => g.coordinates,
         getSize: g => 3,
         getColor: g => g.color,
-        getPixelOffset: [0, -10]
+        getPixelOffset: [0, -12]
       }),
       /*
       new TextLayer({
@@ -205,12 +205,12 @@ export default class App extends Component {
       }),
       */
       new TextLayer({
-        id: 'created',
-        data: created,
+        id: 'messages',
+        data: messages,
         getPosition: d => d.coordinates,
         getText: d => d.notification,
         getSize: 16,
-        getColor: d => [0, 0, 0, isVisible(d.timestamp, this.state.time, 50, 255)],
+        getColor: d => (d.notification === "transfer aborted" ? [255, 0, 0, isVisible(d.timestamp, this.state.time, 50, 255)] : [0, 0, 0, isVisible(d.timestamp, this.state.time, 50, 255)]),
         backgroundColor: [255, 255, 255],
         getTextAnchor: 'middle',
         getAlignmentBaseline: 'top',
@@ -222,8 +222,10 @@ export default class App extends Component {
         transitions: {
           getColor: {
             type: 'spring',
-            duration: 0,
-            enter: d => [0]
+            stiffness: 0.01,
+            damping: 0.15,
+            duration: 200
+            //enter: d => [255]
           }
         }
         */
