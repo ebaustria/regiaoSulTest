@@ -17,4 +17,7 @@ print("Making arrivals JSON...")
 arrival_conversion.make_arrivals("arrivals.txt", "gps_coordinates_brazil.csv")
 
 print("Making messages JSON...")
-message_conversion.message_json("created_messages.txt", "gps_coordinates_brazil.csv", "creating message")
+message_conversion.message_json("messages.txt", "gps_coordinates_brazil.csv")
+
+# print("Making carried messages JSON...")
+# message_conversion.carried_messages("carried_messages.txt", "gps_coordinates_brazil.csv")
