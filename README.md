@@ -20,8 +20,6 @@ cd the-one
 git checkout longDistance
 ```
 
-**Note**: Make sure that ```Report.report1``` on line 105 of ```the-one/default_settings.txt``` is set to ```LocalCoordinatesReport```. 
-
 Compile the code and run the simulation:
 
 ```
@@ -29,9 +27,9 @@ Compile the code and run the simulation:
 ./one.sh regiaoSul_settings.txt
 ```
 
-**Note**: If you are using Java 11, you will need to compile the program with ```./compileJava11.sh```. ```the-one/README.txt``` or ```the-one/README.md``` can be consulted for more information on compiling and running the-ONE, if necessary. It may be necessary to remove the flight recorder in order to run the simulation. If this is the case, open ```the-one/one.sh``` and remove ```-XX:+FlightRecorder  -XX:StartFlightRecording=duration=60s,filename=myrecording.jfr ``` from the file. Afterwards, it should work. When the simulation is finished, it will write a report. Each line of the report has the following form: vehicle name, local coordinates, timestamp. The vehicle name is the name of the vehicle in question, the local coordinates are a pair of local coordinates used in the ONE, and the timestamp is the simulation time at which the vehicle is located at the local coordinates in question.
+**Note**: If you are using Java 11, you will need to compile the program with ```./compileJava11.sh```. ```the-one/README.txt``` or ```the-one/README.md``` can be consulted for more information on compiling and running the-ONE, if necessary. It may be necessary to remove the flight recorder in order to run the simulation. If this is the case, open ```the-one/one.sh``` and remove ```-XX:+FlightRecorder  -XX:StartFlightRecording=duration=60s,filename=myrecording.jfr ``` from the file. Afterwards, it should work. When the simulation is finished, it will write two reports. One of the reports has the following form: DTNHost name, local coordinates, timestamp. The DTNHost name is the name of the DTNHost in question, the local coordinates are a pair of local coordinates used in the ONE, and the timestamp is the simulation time at which the DTNHost is located at the local coordinates in question. The other report has the following form: local coordinates, timestamp, action. The action is a short string that describes the messaging activity of the DTNHost at that timestamp.
 
-Open ```the-one/reports```. Find the aforementioned report. It should be the most recent report and its name should end with ```LocalCoordinatesReport.txt```. If it is your first time running the simulation, it will be the only file in ```the-one/reports```. Rename the report as ```local_coordinates_brazil.txt```. Move this file to the ```regiaoSul``` repository.
+Open ```the-one/reports```. Find the aforementioned reports. They should be the most recent reports. Their names should end with ```LocalCoordinatesReport.txt``` and ```MessageCoordinatesReport.txt```. If it is your first time running the simulation, they will be the only files in ```the-one/reports```. Rename the report that ends with ```LocalCoordinatesReport.txt``` as ```local_coordinates_brazil.txt```, and rename the report that ends with ```MessageCoordinatesReport.txt``` as ```messages.txt```. Move both of these files to the ```regiaoSul``` repository.
 
 Next, open ```the-one/data/regiaoSul```. Find ```stations.wkt``` and ```cities.wkt``` and copy them to the ```regiaoSul``` repository. Do not change the name of either file.
 
@@ -61,7 +59,7 @@ Run ```json_generator.py```:
 python3 -m json_generator
 ```
 
-The first function call in ```json_generator.py``` reads ```local_coordinates_brazil.txt``` and ```gps_coordinates_brazil.csv```, parses the data in each file, and uses it to build a list of dictionaries that each contain a list of GPS coordinates and a list of corresponding timestamps for a vehicle. This list of dictionaries is then written to a JSON file called ```trips.json``` that can be used to visualize vehicle movement in deck.gl. The second function call in ```json_generator.py``` reads in each of the WKT linestring files, parses the data in them, and creates a list of dictionaries that each contain a route name, a color, and a list of the route's GPS coordinates in linestring form. This list is then written to a JSON file called ```routes_brazil.json``` that can be used to visualize the public transit lines in deck.gl. The third function call in ```json_generator.py``` reads ```stations.wkt``` and ```cities.wkt```, parses the data in each file, and builds a list of dictionaries that each contain a single pair of GPS coordinates. This list is then written to a JSON file called ```stops.json``` that can be used to visualize public transit stops in deck.gl. The third function call reads ```arrivals.txt``` (includes timestamps for when vehicles arrive at stops in the ONE) and ```gps_coordinates_brazil.csv```, parses the data in each file, and builds a list of dictionaries. Each dictionary contains a vehicle name, a set of coordinates, a single timestamp, and a color (RGB format). The list is written to a file called ```arrivals.json```, which is used to visualize the arrivals of vehicles at public transit stops in deck.gl. The final function call reads ```created_messages.txt``` and ```gps_coordinatesbrazil.csv``` and creates a file called ```creating_message.json``` which is used to visualize the creation of messages in the-ONE. This part of the visualization is still a work in progress.
+The first function call in ```json_generator.py``` reads ```local_coordinates_brazil.txt``` and ```gps_coordinates_brazil.csv```, parses the data in each file, and uses it to build a list of dictionaries that each contain a list of GPS coordinates and a list of corresponding timestamps for a vehicle. This list of dictionaries is then written to a JSON file called ```trips.json``` that can be used to visualize vehicle movement in deck.gl. The second function call in ```json_generator.py``` reads in each of the WKT linestring files, parses the data in them, and creates a list of dictionaries that each contain a route name, a color, and a list of the route's GPS coordinates in linestring form. This list is then written to a JSON file called ```routes_brazil.json``` that can be used to visualize the public transit lines in deck.gl. The third function call in ```json_generator.py``` reads ```stations.wkt``` and ```cities.wkt```, parses the data in each file, and builds a list of dictionaries that each contain a single pair of GPS coordinates. This list is then written to a JSON file called ```stops.json``` that can be used to visualize public transit stops in deck.gl. The third function call reads ```arrivals.txt``` (includes timestamps for when vehicles arrive at stops in the ONE) and ```gps_coordinates_brazil.csv```, parses the data in each file, and builds a list of dictionaries. Each dictionary contains a vehicle name, a set of coordinates, a single timestamp, and a color (RGB format). The list is written to a file called ```arrivals.json```, which is used to visualize the arrivals of vehicles at public transit stops in deck.gl. The final function call reads ```messages.txt``` and ```gps_coordinatesbrazil.csv``` and creates a file called ```messages.json``` which is used to visualize messaging activity in the-ONE. This part of the visualization is still a work in progress.
 
 ## Visualizing the Data
 Create a remote repository and add it if you haven't already. Stage the five JSON files from the previous section to be committed, commit them, and push them to your remote:
@@ -72,7 +70,7 @@ git add trips.json
 git add routes_brazil.json
 git add stops.json
 git add arrivals.json
-git add creating_message.json
+git add messages.json
 git commit -m "<i>message</i>"
 git push <i>remote_name</i> master
 </pre>
@@ -132,7 +130,7 @@ The final step is to initialize each layer instance in the ```layer``` constant 
 * routes_brazil.json --> PathLayer
 * stops.json --> IconLayer
 * arrivals.json --> ScatterplotLayer
-* creating_message.json --> TextLayer
+* messages.json --> TextLayer
 
 The following sections provide examples of how to initialize the necessary layers within ```layer```, as well as some additional information.
 
@@ -244,7 +242,8 @@ The general template for the TextLayer's properties is:
       getColor: d => [0, 0, 0, isVisible(d.timestamp, time, 30, 255)],     //only edit last two parameters in function call
       backgroundColor: [255, 255, 255],
       getTextAnchor: 'middle',            //determines where the text is displayed relative to the object's position ('start', 'middle', or 'end')
-      getAlignmentBaseline: 'center',     //determines where the text is displayed relative to the object's position ('top', 'center', or 'bottom')
+      getAlignmentBaseline: 'top',     //determines where the text is displayed relative to the object's position ('top', 'center', or 'bottom')
+      getPixelOffset: [0, 3],
       updateTriggers: {
         getColor: [d => [0, 0, 0, isVisible(d.timestamp, time, 30, 255)]]  //only edit last two parameters in function call
       }
